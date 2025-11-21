@@ -7,7 +7,7 @@ from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import random_art_id, get_art, lookup, get_details
+from helpers import random_art_id, get_art, lookup
 
 # Configure application
 app = Flask(__name__)
@@ -70,13 +70,8 @@ def search():
         artist = request.form.get('artist')
 
         art_ids = lookup(artist)
-        print(art_ids)
-        gallery = []
+        print(f"ids:{art_ids}")
 
-        if art_ids:
-            for art_id in art_ids:
-                art_details = get_details(art_id)
-                if art_details:
-                    gallery.append(art_details)
+        return render_template("gallery.html")
 
     return render_template("search.html")

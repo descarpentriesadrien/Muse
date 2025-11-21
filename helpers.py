@@ -56,9 +56,4 @@ def lookup(artist):
         print(f"Request error: {e}")
         return None
 
-'''THIS FUNCTION IS THE SAME AS GET-ART BUT RETURN THE WHOLE OBJECT'''
-def get_details(object_id):
-    url = f"https://collectionapi.metmuseum.org/public/collection/v1/objects/{object_id}"
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.json()
+
