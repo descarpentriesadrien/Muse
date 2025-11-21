@@ -39,6 +39,7 @@ def get_art(art_id):
         print(f"Data parsing error: {e}")
     return None
 
+
 def lookup(artist):
     '''Query for Artist'''
     url = f"https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q={artist}"
@@ -54,3 +55,10 @@ def lookup(artist):
     except requests.RequestException as e:
         print(f"Request error: {e}")
         return None
+
+'''THIS FUNCTION IS THE SAME AS GET-ART BUT RETURN THE WHOLE OBJECT'''
+def get_details(object_id):
+    url = f"https://collectionapi.metmuseum.org/public/collection/v1/objects/{object_id}"
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json()
