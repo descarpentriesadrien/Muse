@@ -71,9 +71,10 @@ def search():
 
         arts = lookup(artist)
         if arts:
+            gallery = {}
             for art in arts:
-                art_data = get_art(art)
-                print(art_data)
-        return render_template("gallery.html", art_data=art_data)
+                gallery = get_art(art)
+                print(gallery)
+        return render_template("gallery.html", gallery=gallery)
 
     return render_template("search.html")
