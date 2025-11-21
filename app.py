@@ -70,8 +70,15 @@ def search():
         artist = request.form.get('artist')
 
         art_ids = lookup(artist)
+        gallery = []
         print(f"ids:{art_ids}")
 
-        return render_template("gallery.html")
+        if art_ids:
+            for art_id in art_ids[:10]:
+                art_details = get_art(art_id)
+                if art_details:
+                    gallery.append(art_details)
+
+        return render_template("gallery.html", gallery=gallery)
 
     return render_template("search.html")
