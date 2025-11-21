@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <h2>Gallery</h2>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Art id</th>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Date</th>
+                    <th>Object Name</th>
+                    <th>Medium</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+        <tbody>
+            {% if arts %}
+                {% for art in arts %}
+                    <tr>
+                        <td>{{ art.objectID }}</td>
+                        <td>{{ art.title }}</td>
+                        <td>{{ art.artistDisplayName }}</td>
+                        <td>{{ art.objectDate }}</td>
+                        <td>{{ art.objectName }}</td>
+                        <td>{{ art.imagePrimary }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6">There was no result</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

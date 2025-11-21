@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <form method="get">
+        <button type="submit" formaction="/art" class="btn btn-primary">Generate art</button>
+        <button type="submit" formaction="/history" class="btn btn-primary">History</button>
+        <button type="submit" formaction="/search" class="btn btn-primary">Explore</button>
+    </form>
+{% endblock %}

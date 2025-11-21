@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <h1>Reflection page</h1>
+    <form method="post">
+        <input name="impression" autocomplete="off" autofocus placeholder="Department" type="text">
+        <button type="submit" formaction="/history" class="btn btn-primary">Search</button>
+    </form>
+{% endblock %}

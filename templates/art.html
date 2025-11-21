@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <h2>Art page</h2>
+
+        <button method="post" type="submit" action="/reflection" class="btn btn-primary">Done</button><br/>
+
+    {% if art %}
+
+        <div>
+            <p><strong>Art Id: </strong>{{ art.objectID }}</p>
+            <p><strong>Title: </strong>{{ art.title }}</p>
+            <p><strong>Artist: </strong>{{ art.artistDisplayName }}</p>
+            <p><strong>Date: </strong>{{ art.objectDate }}</p>
+            <p><strong>Object Name: </strong>{{ art.objectName }}</p>
+            <p><strong>Medium: </strong>{{ art.medium }}</p>
+            {% if not art.primaryImage %}
+            <p>NO IMAGE</p>
+            {% endif %}
+        </div>
+
+        <div id="openseadragon-viewer" style="width: 100%; height: 80vh;"></div>
+
+    {% else %}
+        <p>No art to display. Please generate some art.</p>
+    {% endif %}
+
+    <script>
+        OpenSeadragon({
+            id: "openseadragon-viewer",
+            prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
+            tileSources: {
+                type: 'image',
+                url: "{{ art.primaryImage }}"
+            }
+        });
+    </script>
+
+{% endblock %}

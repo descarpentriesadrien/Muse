@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <form method="POST">
+        <input name="artist" autocomplete="off" autofocus placeholder="Artist" type="text">
+        <input name="title" autocomplete="off" placeholder="Title" type="text">
+        <button type="submit" action="/gallery" class="btn btn-primary">Search</button>
+    </form>
+{% endblock %}

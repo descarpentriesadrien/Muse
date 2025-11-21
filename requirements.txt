@@ -1,0 +1,9 @@
+cs50
+flask
+sqlite3
+flask-session
+werkzeug
+
+
+seadragon
+npm install @types/openseadragon
