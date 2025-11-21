@@ -70,6 +70,7 @@ def search():
         artist = request.form.get('artist')
 
         arts = lookup(artist)
+        print(arts)
         if arts:
             gallery = {}
             for art in arts:
