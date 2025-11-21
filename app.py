@@ -69,13 +69,13 @@ def search():
     if request.method == "POST":
         artist = request.form.get('artist')
 
-        arts = lookup(artist)
-        print(arts)
-        if arts:
-            gallery = {}
-            for art in arts:
-                gallery = get_art(art)
-                print(gallery)
-        return render_template("gallery.html", gallery=gallery)
+        art_ids = lookup(artist)
+        gallery = []
+
+        if art_ids:
+            for art_id in art_ids[:20]:
+                art_details = get_art(art_id)
+                if art_details:
+                    gallery.append(art_details)
 
     return render_template("search.html")
