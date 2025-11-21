@@ -45,8 +45,11 @@ def lookup(artist):
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an error for HTTP error responses
-        art = response.json()
-        return art
+        data = response.json()
+        object_ids = data.get("objectIDs", [])
+        if not object_ids:
+            return None
+        return random.choice(object_ids)
 
     except requests.RequestException as e:
         print(f"Request error: {e}")
