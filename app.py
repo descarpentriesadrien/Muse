@@ -66,19 +66,22 @@ def reflection():
 def search():
     '''Search by artist, classification or department'''
 
+    # If user submit a request for an artist search
     if request.method == "POST":
         artist = request.form.get('artist')
 
+        # Use API to return a list of ID for artist
         art_ids = lookup(artist)
-        gallery = []
-        print(f"ids:{art_ids}")
+        arts = []
 
+        # For each ids, get the art details and add to arts list
         if art_ids:
+            # LIMITING TO 10 AS A COURTESY FOR API CALLS
             for art_id in art_ids[:10]:
                 art_details = get_art(art_id)
                 if art_details:
-                    gallery.append(art_details)
+                    arts.append(art_details)
 
-        return render_template("gallery.html", gallery=gallery)
+        return render_template("gallery.html", arts=arts)
 
     return render_template("search.html")
