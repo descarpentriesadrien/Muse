@@ -59,7 +59,7 @@ def art():
 
         # Get the art details from the API
         art = get_art(art_id)
-        
+
         # Render the art
         if art:
             return render_template('art.html', art=art)
@@ -83,8 +83,9 @@ def history():
 @login_required
 @app.route("/reflection", methods=["GET", "POST"])
 def reflection():
-    '''Display a few questions for the user to reflect on'''
+    '''Renders a page on which user can reflect. Display art's info'''
 
+    # From art_id value, get art details (cached)
     art_id = request.args.get("art_id")
     art = get_art(art_id)
 
@@ -93,6 +94,7 @@ def reflection():
 @login_required
 @app.route("/save_reflection", methods=["POST"])
 def save_reflection():
+    '''Save the user's impression on art piece'''
 
     # Get user ID
     user_id = session['user_id']
