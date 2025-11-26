@@ -93,12 +93,12 @@ def reflection():
 def save_reflection():
 
     # Get art id and impression from user and form
-    art_id = request.args.get("art_id")
+    art_id = request.form.get("art_id")
     art = get_art(art_id)
     impression = request.form.get("impression")
-    print(f"THIS IS WHAT THE DICT RETURNS: {art}")
+
     # Save to DB
-    db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistName"], art["primaryImage"], impression)
+    db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistDisplayName"], art["primaryImage"], impression)
 
     return render_template('index.html')
 
