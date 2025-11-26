@@ -117,7 +117,7 @@ def search():
     '''Search by artist, classification or department'''
 
     # If user submit a request for an artist search
-    artist = request.form.get('artist')
+    artist = request.args.get('artist')
 
     if not artist:
         return render_template("search.html")
@@ -125,6 +125,7 @@ def search():
     # Use API to return a list of ID for artist
     art_ids = lookup(artist)
     arts = []
+    print(f"ARTS HERE: {arts}")
 
     # For each ids, get the art details and add to arts list
     if art_ids:
