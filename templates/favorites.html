@@ -12,6 +12,7 @@
                 <th>Title</th>
                 <th>Impressions</th>
                 <th>View</th>
+                <th>Favorites</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@
                         <td>{{ favorite.title }}</td>
                         <td>{{ favorite.impressions }}</td>
                         <td><a target='blank' href='{{ favorite.primaryImage }}'><button class="btn btn-primary">View</button></a></td>
+                        <td><button>Add/Remove</button></td>
                     </tr>
                 {% endfor %}
             {% else %}
