@@ -14,6 +14,7 @@
                     <th>Object Name</th>
                     <th>Medium</th>
                     <th>Image</th>
+                    <th>Add to favorite</th>
                 </tr>
             </thead>
         <tbody>
@@ -27,6 +28,7 @@
                         <td>{{ art.objectName }}</td>
                         <td>{{ art.medium }}</td>
                         <td><a target="blank" href="{{ art.primaryImage }}"><img src="{{ art.primaryImageSmall }}" alt="{{ art.title }}" class="image_thumbnail"></a></td>
+                        <td><button></button></td>
                     </tr>
                 {% endfor %}
             {% else %}
