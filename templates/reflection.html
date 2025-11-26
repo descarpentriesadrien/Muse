@@ -4,7 +4,7 @@
     <h1>Reflect</h1>
 
     <form method="post">
-        <input name="art_id" value="{{ art.id }}" hidden>
+        <input name="art_id" value="{{ art.objectID }}" hidden>
         <input name="impression" autocomplete="off" autofocus placeholder="Give your impressions" type="text">
         <button type="submit" formaction="/save_reflection" class="btn btn-primary">Save</button>
     </form>
