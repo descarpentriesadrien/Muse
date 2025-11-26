@@ -89,7 +89,7 @@ def reflection():
     if request.method == "POST":
         impressions = request.form.get("impressions")
 
-        db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", impressions)
+        db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", objectID, objectName, title, artistName, primaryImage, impressions)
 
     return render_template("reflection.html", art=art)
 
