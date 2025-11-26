@@ -139,7 +139,7 @@ def search():
 
 @login_required
 @app.route("/favorites")
-def favorite_view():
+def favorites():
     '''Renders a table of the user's favorite paintings'''
 
     user_id = session['user_id']

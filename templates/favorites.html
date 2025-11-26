@@ -12,17 +12,16 @@
                 <th>Title</th>
                 <th>Impressions</th>
                 <th>View</th>
-                <th>Add to Favorite</th>
             </tr>
         </thead>
         <tbody>
             {% if favorites %}
                 {% for favorite in favorites %}
                     <tr>
-                        <td>{{ record.artistName }}</td>
-                        <td>{{ record.title }}</td>
-                        <td>{{ record.impressions }}</td>
-                        <td><a target='blank' href='{{ record.primaryImage }}'><button class="btn btn-primary">View</button></a></td>
+                        <td>{{ favorite.artistName }}</td>
+                        <td>{{ favorite.title }}</td>
+                        <td>{{ favorite.impressions }}</td>
+                        <td><a target='blank' href='{{ favorite.primaryImage }}'><button class="btn btn-primary">View</button></a></td>
                     </tr>
                 {% endfor %}
             {% else %}
