@@ -20,7 +20,7 @@
                     <td>{{ record.artistName }}</td>
                     <td>{{ record.title }}</td>
                     <td>{{ record.impressions }}</td>
-                    <td>{{ record.primaryImage }}</td>
+                    <td><a target='blank' href='{{ record.primaryImage }}'><button class="btn btn-primary">View</button></a></td>
                 </tr>
             {% endfor %}
         </tbody>
