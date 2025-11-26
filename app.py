@@ -86,12 +86,17 @@ def reflection():
     art_id = request.args.get("art_id")
     art = get_art(art_id)
 
-    if request.method == "POST":
-        impressions = request.form.get("impressions")
-
-        db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", objectID, objectName, title, artistName, primaryImage, impressions)
-
     return render_template("reflection.html", art=art)
+
+@login_required
+@app.route("/save_reflection", methods=["POST"])
+def save_reflection():
+
+    
+    impressions = request.form.get("impressions")
+
+    db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistName"], art["primaryImage"], impressions)
+
 
 
 @login_required
