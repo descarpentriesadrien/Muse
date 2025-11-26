@@ -137,6 +137,18 @@ def search():
     return render_template("search.html")
 
 
+@login_required
+@app.route("/favorites")
+def favorite_view():
+    '''Renders a table of the user's favorite paintings'''
+
+    user_id = session['user_id']
+
+    # NEED TO ADD FAVORITE = 1 + JAVASCRIPT HERE
+    favorites = db.execute("SELECT * FROM history WHERE user_id = ?", user_id)
+
+    return render_template("favorites.html", favorites=favorites)
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():  # CS50 Pset recycled

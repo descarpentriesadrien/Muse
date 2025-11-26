@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+<title>{% block title %}Favorites{% endblock %}</title>
+
+{% block main %}
+    <h1>My favorites</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Artist Name</th>
+                <th>Title</th>
+                <th>Impressions</th>
+                <th>View</th>
+                <th>Add to Favorite</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if favorites %}
+                {% for favorite in favorites %}
+                    <tr>
+                        <td>{{ record.artistName }}</td>
+                        <td>{{ record.title }}</td>
+                        <td>{{ record.impressions }}</td>
+                        <td><a target='blank' href='{{ record.primaryImage }}'><button class="btn btn-primary">View</button></a></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan='4'>
+                        You do not have any favorites yet
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}
