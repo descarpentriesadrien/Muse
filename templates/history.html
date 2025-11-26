@@ -12,6 +12,7 @@
                 <th>Title</th>
                 <th>Impressions</th>
                 <th>View</th>
+                <th>Add to Favorite</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@
                         <td>{{ record.title }}</td>
                         <td>{{ record.impressions }}</td>
                         <td><a target='blank' href='{{ record.primaryImage }}'><button class="btn btn-primary">View</button></a></td>
+                        <td><button class="btn btn-primary"></button></td>
                     </tr>
                 {% endfor %}
             {% else %}
