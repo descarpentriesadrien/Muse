@@ -73,7 +73,9 @@ def art():
 def history():
     '''Display a table of previously seen/answered art pieces'''
 
-    history = db.execute("SELECT * FROM history")
+    user_id = session['user_id']
+
+    history = db.execute("SELECT * FROM history WHERE user_id = ?", user_id)
 
     return render_template("history.html", history=history)
 
@@ -98,11 +100,13 @@ def save_reflection():
     impression = request.form.get("impression")
 
     # Save to DB
-    db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistDisplayName"], art["primaryImage"], impression)
+    db.execute("INSERT INTO history (user_id, objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, art["objectID"], art["objectName"], art["title"], art["artistDisplayName"], art["primaryImage"], impression)
 
-    history = ("SELECT * FROM history WHERE user_id = ?", user_id)
+    user_id = session['user_id']
 
-    return render_template('history.html', history=history)
+    history = db.execute("SELECT * FROM history WHERE user_id = ?", user_id)
+
+    return render_template("history.html", history=history)
 
 @login_required
 @app.route("/search", methods=["GET","POST"])

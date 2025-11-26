@@ -15,14 +15,18 @@
             </tr>
         </thead>
         <tbody>
-            {% for record in history %}
-                <tr>
-                    <td>{{ record.artistName }}</td>
-                    <td>{{ record.title }}</td>
-                    <td>{{ record.impressions }}</td>
-                    <td><a target='blank' href='{{ record.primaryImage }}'><button class="btn btn-primary">View</button></a></td>
-                </tr>
-            {% endfor %}
+            {% if history %}
+                {% for record in history %}
+                    <tr>
+                        <td>{{ record.artistName }}</td>
+                        <td>{{ record.title }}</td>
+                        <td>{{ record.impressions }}</td>
+                        <td><a target='blank' href='{{ record.primaryImage }}'><button class="btn btn-primary">View</button></a></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>You do not have any impressions yet</tr>
+            {% endif %}
         </tbody>
     </table>
 {% endblock %}
