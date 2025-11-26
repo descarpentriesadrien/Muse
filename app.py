@@ -94,6 +94,9 @@ def reflection():
 @app.route("/save_reflection", methods=["POST"])
 def save_reflection():
 
+    # Get user ID
+    user_id = session['user_id']
+
     # Get art id and impression from user and form
     art_id = request.form.get("art_id")
     art = get_art(art_id)
@@ -101,8 +104,6 @@ def save_reflection():
 
     # Save to DB
     db.execute("INSERT INTO history (user_id, objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, art["objectID"], art["objectName"], art["title"], art["artistDisplayName"], art["primaryImage"], impression)
-
-    user_id = session['user_id']
 
     history = db.execute("SELECT * FROM history WHERE user_id = ?", user_id)
 
