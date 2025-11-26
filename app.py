@@ -119,6 +119,9 @@ def search():
     # If user submit a request for an artist search
     artist = request.form.get('artist')
 
+    if not artist:
+        return render_template("search.html")
+
     # Use API to return a list of ID for artist
     art_ids = lookup(artist)
     arts = []
@@ -132,8 +135,6 @@ def search():
                 arts.append(art_details)
 
     return render_template("gallery.html", arts=arts)
-
-# return render_template("search.html")
 
 
 @login_required
