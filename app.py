@@ -96,9 +96,7 @@ def save_reflection():
     art_id = request.args.get("art_id")
     art = get_art(art_id)
     impression = request.form.get("impression")
-
-    print(art["objectID"], art["objectName"], art["title"], art["artistName"], art["primaryImage"])
-
+    print(f"THIS IS WHAT THE DICT RETURNS: {art}")
     # Save to DB
     db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistName"], art["primaryImage"], impression)
 
