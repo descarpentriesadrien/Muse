@@ -64,7 +64,7 @@ def get_art(art_id):
         response.raise_for_status()  # Raise an error for HTTP error responses
         art = response.json()
 
-        # If no image in the response, return None
+        # If missing info in the response, return None
         if art_id is None:
             return None
         if not art.get("primaryImage"):
