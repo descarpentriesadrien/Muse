@@ -100,7 +100,9 @@ def save_reflection():
     # Save to DB
     db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistDisplayName"], art["primaryImage"], impression)
 
-    return render_template('index.html')
+    history = ("SELECT * FROM history WHERE user_id = ?", user_id)
+
+    return render_template('history.html', history=history)
 
 @login_required
 @app.route("/search", methods=["GET","POST"])

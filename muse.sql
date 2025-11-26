@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS history (
     title TEXT,
     artistName TEXT,
     primaryImage TEXT,
-    impressions TEXT
+    impressions TEXT,
+    FOREIGN KEY(user_id) REFERENCES users(id),
 );
 
