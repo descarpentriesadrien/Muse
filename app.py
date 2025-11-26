@@ -98,7 +98,7 @@ def save_reflection():
     impression = request.form.get("impression")
 
     # Save to DB
-    db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impression) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistName"], art["primaryImage"], impression)
+    db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistName"], art["primaryImage"], impression)
 
     return render_template('index.html')
 
