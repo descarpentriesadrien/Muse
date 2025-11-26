@@ -50,9 +50,8 @@ def index():
 @app.route("/art")
 def art():
 
-    # Number of attempts for API calls
+    # Number of attempts for API calls (This is to avoid too many calls at once as per MET's request)
     attempts = 20
-    count = 0
 
     for _ in range(attempts):
         # Get a random art ID
@@ -60,6 +59,7 @@ def art():
 
         # Get the art details from the API
         art = get_art(art_id)
+        
         # Render the art
         if art:
             return render_template('art.html', art=art)
