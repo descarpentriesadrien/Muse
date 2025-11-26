@@ -69,7 +69,7 @@ def art():
 
 
 @login_required
-@app.route("/history", methods=["GET", "POST"])
+@app.route("/history")
 def history():
     '''Display a table of previously seen/answered art pieces'''
 
@@ -81,7 +81,7 @@ def history():
 
 
 @login_required
-@app.route("/reflection", methods=["GET", "POST"])
+@app.route("/reflection")
 def reflection():
     '''Renders a page on which user can reflect. Display art's info'''
 
@@ -125,7 +125,6 @@ def search():
     # Use API to return a list of ID for artist
     art_ids = lookup(artist)
     arts = []
-    print(f"ARTS HERE: {arts}")
 
     # For each ids, get the art details and add to arts list
     if art_ids:
