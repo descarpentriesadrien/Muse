@@ -1,39 +1,61 @@
 {% extends "layout.html" %}
 
+<title>{% block title %}Art{% endblock %}</title>
+
 {% block main %}
     <h2>Art page</h2>
 
-        <button method="post" type="submit" action="/reflection" class="btn btn-primary">Done</button><br/>
+        <a href="/reflection?art_id={{ art.objectID }}" class="btn btn-primary">Give your impression</a>
 
     {% if art %}
-
         <div>
+
             <p><strong>Art Id: </strong>{{ art.objectID }}</p>
             <p><strong>Title: </strong>{{ art.title }}</p>
             <p><strong>Artist: </strong>{{ art.artistDisplayName }}</p>
             <p><strong>Date: </strong>{{ art.objectDate }}</p>
             <p><strong>Object Name: </strong>{{ art.objectName }}</p>
             <p><strong>Medium: </strong>{{ art.medium }}</p>
+            <p><strong>Dimensions: </strong> {{ art.dimensions }}</p>
+            <p><strong>Department: </strong> {{ art.department }}</p>
             {% if not art.primaryImage %}
             <p>NO IMAGE</p>
             {% endif %}
+
         </div>
 
-        <div id="openseadragon-viewer" style="width: 100%; height: 80vh;"></div>
+        <div id="viewer-container">
+            <div id="loading-spinner"></div>
+            <div class="seadragon-container" id="openseadragon-viewer" style="width: 100%; height: 80vh;"></div>
+            <div id="navigatorDiv" style="width:150px; height:150px;"></div>
+        </div>
+
 
     {% else %}
         <p>No art to display. Please generate some art.</p>
     {% endif %}
 
     <script>
-        OpenSeadragon({
+
+        // OpenSeadragon Viewer setup
+        const viewer = OpenSeadragon({
             id: "openseadragon-viewer",
             prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
             tileSources: {
                 type: 'image',
-                url: "{{ art.primaryImage }}"
-            }
+                url: "{{ art.primaryImage }}",
+                placeholder: "{{ art.primaryImageSmall }}"
+            },
+            showNavigator: true,
+            showLoading: true,
+            immediateRender: true,
         });
+
+        // When tiles finish loading hide the spinner
+        viewer.addHandler("open", () => {
+        document.getElementById("loading-spinner").style.display = "none";
+        });
+
     </script>
 
 {% endblock %}

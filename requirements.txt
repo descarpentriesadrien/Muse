@@ -3,7 +3,7 @@ flask
 sqlite3
 flask-session
 werkzeug
-
+Flask-caching
 
 seadragon
 npm install @types/openseadragon

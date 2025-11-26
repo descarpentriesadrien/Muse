@@ -14,3 +14,4 @@ CREATE TABLE IF NOT EXISTS history (
     primaryImage TEXT,
     impressions TEXT
 );
+

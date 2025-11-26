@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+<title>{% block title %}Search{% endblock %}</title>
+
 {% block main %}
     <form method="POST">
         <input name="artist" autocomplete="off" autofocus placeholder="Artist" type="text">

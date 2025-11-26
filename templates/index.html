@@ -1,9 +1,36 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <form method="get">
-        <button type="submit" formaction="/art" class="btn btn-primary">Generate art</button>
-        <button type="submit" formaction="/history" class="btn btn-primary">History</button>
-        <button type="submit" formaction="/search" class="btn btn-primary">Explore</button>
-    </form>
+<form method="get">
+    <div class="card-container">
+        <div class="card" style="width: 18rem;">
+            <img src="../static/images/DP-42549-001.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Art Surprise</h5>
+                <p class="card-text">Discover a completely random masterpiece from the MET’s vast collection and enjoy an unexpected moment of exploration and reflection.</p>
+                <button type="submit" formaction="/art" class="btn btn-primary">Explore</button>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <img src="../static/images/DP-25465-001.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Your reflections</h5>
+                <p class="card-text">Revisit the artworks you’ve explored and the impressions you shared, all organized in one place for deeper appreciation and discovery.</p>
+                <button type="submit" formaction="/history" class="btn btn-primary">History</button>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <img src="../static/images/DP346475.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Art Search</h5>
+                <p class="card-text">Look up specific artists or artworks and explore results from the museum’s collection to find exactly what you’re looking for.</p>
+                <button type="submit" formaction="/search" class="btn btn-primary">Explore</button>
+            </div>
+        </div>
+    </div>
+
+
+</form>
 {% endblock %}

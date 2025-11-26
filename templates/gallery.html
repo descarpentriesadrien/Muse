@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+<title>{% block title %}Gallery{% endblock %}</title>
+
 {% block main %}
     <h2>Gallery</h2>
         <table class="table table-striped">
@@ -23,8 +25,8 @@
                         <td>{{ art.artistDisplayName }}</td>
                         <td>{{ art.objectDate }}</td>
                         <td>{{ art.objectName }}</td>
-                        <td>{{ art.imagePrimary }}</td>
-                        <td></td>
+                        <td>{{ art.medium }}</td>
+                        <td><a target="blank" href="{{ art.primaryImage }}"><img src="{{ art.primaryImageSmall }}" alt="{{ art.title }}" class="image_thumbnail"></a></td>
                     </tr>
                 {% endfor %}
             {% else %}
@@ -34,7 +36,7 @@
             {% endif %}
         </tbody>
     </table>
-    
+
 <p>Result are limited to 10 as a courtesy to the MET museum</p>
 
 {% endblock %}
