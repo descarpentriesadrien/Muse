@@ -95,10 +95,10 @@ def save_reflection():
     # Get art id and impression from user and form
     art_id = request.args.get("art_id")
     art = get_art(art_id)
-    impressions = request.form.get("impressions")
+    impression = request.form.get("impression")
 
     # Save to DB
-    db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistName"], art["primaryImage"], impressions)
+    db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impression) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistName"], art["primaryImage"], impression)
 
     return render_template('index.html')
 
