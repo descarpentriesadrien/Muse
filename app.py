@@ -92,12 +92,15 @@ def reflection():
 @app.route("/save_reflection", methods=["POST"])
 def save_reflection():
 
-    
+    # Get art id and impression from user and form
+    art_id = request.args.get("art_id")
+    art = get_art(art_id)
     impressions = request.form.get("impressions")
 
+    # Save to DB
     db.execute("INSERT INTO history (objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?)", art["objectID"], art["objectName"], art["title"], art["artistName"], art["primaryImage"], impressions)
 
-
+    return render_template('index.html')
 
 @login_required
 @app.route("/search", methods=["GET","POST"])
