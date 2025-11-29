@@ -18,12 +18,16 @@
         <tbody>
             {% if favorites %}
                 {% for favorite in favorites %}
-                    <tr>
+                    <tr class="art-row">
                         <td>{{ favorite.artistName }}</td>
                         <td>{{ favorite.title }}</td>
                         <td>{{ favorite.impressions }}</td>
-                        <td><a target='blank' href='{{ favorite.primaryImage }}'><button class="btn btn-primary">View</button></a></td>
-                        <td><button>Add/Remove</button></td>
+                        <td><a href="/details?art_id={{ favorite.objectID }}" class="btn btn-primary">View</a></td>
+                        {% if favorite.favorite == 0 %}
+                        <td><button class="btn btn-primary like-button" data-id="{{ favorite.id }}"><i class="bi bi-heart"></i> Like</button></td>
+                        {% else %}
+                        <td><button class="btn btn-primary like-button" data-id="{{ favorite.id }}"><i class="bi bi-heart-fill"></i> Unlike</button></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             {% else %}

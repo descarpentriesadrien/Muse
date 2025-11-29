@@ -7,38 +7,40 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Art id</th>
                     <th>Title</th>
                     <th>Artist</th>
                     <th>Date</th>
                     <th>Object Name</th>
                     <th>Medium</th>
                     <th>Image</th>
-                    <th>Add to favorite</th>
+                    <th>View</th>
                 </tr>
             </thead>
         <tbody>
             {% if arts %}
                 {% for art in arts %}
                     <tr>
-                        <td>{{ art.objectID }}</td>
                         <td>{{ art.title }}</td>
                         <td>{{ art.artistDisplayName }}</td>
                         <td>{{ art.objectDate }}</td>
                         <td>{{ art.objectName }}</td>
                         <td>{{ art.medium }}</td>
+                        {% if art.primaryImageSmall %}
                         <td><a target="blank" href="{{ art.primaryImage }}"><img src="{{ art.primaryImageSmall }}" alt="{{ art.title }}" class="image_thumbnail"></a></td>
-                        <td><button></button></td>
+                        {% else %}
+                        <td>No picture available</td>
+                        {% endif %}
+                        <td><a href="/details?art_id={{ art.objectID }}" class="btn btn-primary">View</a></td>
                     </tr>
                 {% endfor %}
             {% else %}
                 <tr>
-                    <td colspan="6">There was no result</td>
+                    <td colspan="100%">There was no result</td>
                 </tr>
             {% endif %}
         </tbody>
     </table>
 
-<p>Result are limited to 10 as a courtesy to the MET museum</p>
+<p>The results for this project are limited to 10 as a courtesy to the MET museum</p>
 
 {% endblock %}

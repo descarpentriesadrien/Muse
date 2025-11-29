@@ -3,12 +3,13 @@ import datetime
 import requests
 
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_caching import Cache
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import cache, random_art_id, get_art, lookup, login_required
+from helpers import cache, random_art_id, get_art, search_met_api, login_required, fetch_departments, get_department_objects, get_art_from_department
+
 
 # Configure application
 app = Flask(__name__)
@@ -37,17 +38,18 @@ def after_request(response):
     return response
 
 
-@login_required
+
 @app.route("/")
+@login_required
 def index():
 
     # IMPORT APOLOGY PAGES OR CHANGE LOGIC
-    # NEED TO MAKE SURE USER IS LOGGED IN, OR SHOW LOGIN PAGE
     return render_template("index.html")
 
 
-@login_required
+
 @app.route("/art")
+@login_required
 def art():
 
     # Number of attempts for API calls (This is to avoid too many calls at once as per MET's request)
@@ -68,8 +70,9 @@ def art():
     return render_template("error.html")
 
 
-@login_required
+
 @app.route("/history")
+@login_required
 def history():
     '''Display a table of previously seen/answered art pieces'''
 
@@ -79,9 +82,19 @@ def history():
 
     return render_template("history.html", history=history)
 
-
+@app.route("/details")
 @login_required
+def details():
+    '''Display details of an individual record'''
+
+    art_id = request.args.get('art_id')
+    art = get_art(art_id)
+
+    return render_template("details.html", art=art)
+
+
 @app.route("/reflection")
+@login_required
 def reflection():
     '''Renders a page on which user can reflect. Display art's info'''
 
@@ -91,8 +104,10 @@ def reflection():
 
     return render_template("reflection.html", art=art)
 
-@login_required
+
+
 @app.route("/save_reflection", methods=["POST"])
+@login_required
 def save_reflection():
     '''Save the user's impression on art piece'''
 
@@ -111,41 +126,61 @@ def save_reflection():
 
     return render_template("history.html", history=history)
 
-@login_required
+
 @app.route("/search")
-def search():
-    '''Search by artist, classification or department'''
-
-    # If user submit a request for an artist search
-    artist = request.args.get('artist')
-
-    if not artist:
-        return render_template("search.html")
-
-    # Use API to return a list of ID for artist
-    art_ids = lookup(artist)
-    arts = []
-
-    # For each ids, get the art details and add to arts list
-    if art_ids:
-        # LIMITING TO 10 AS A COURTESY FOR API CALLS
-        for art_id in art_ids[:10]:
-            art_details = get_art(art_id)
-            if art_details:
-                arts.append(art_details)
-
-    return render_template("gallery.html", arts=arts)
-
-
 @login_required
+def search_route():
+    '''Search for objects from the collection'''
+
+    query = request.args.get("query")
+    dept_id = request.args.get("department_query")
+
+    # Global search
+    if query:
+        # Use API to return a list of ID for artist
+        results = search_met_api(query)
+        arts = []
+
+        # For each ids, get the art details and add to arts list
+        if results:
+            # LIMITING TO 10 AS A COURTESY FOR API CALLS
+            for art_id in results[:10]:
+                art_details = get_art(art_id)
+                if art_details:
+                    arts.append(art_details)
+                    
+        return render_template("gallery.html", arts=arts)
+
+    # Department search
+    if dept_id:
+        # Use API to return a list of ID for artist
+        results = get_department_objects(dept_id)
+        arts = []
+
+        # For each ids, get the art details and add to arts list
+        if results:
+            # LIMITING TO 10 AS A COURTESY FOR API CALLS
+            for art_id in results[:10]:
+                art_details = get_art_from_department(art_id)
+                if art_details:
+                    arts.append(art_details)
+
+        return render_template("gallery.html", arts=arts)
+
+    # Default page
+    departments = fetch_departments()
+    return render_template("search.html", departments=departments)
+
+
 @app.route("/favorites")
+@login_required
 def favorites():
     '''Renders a table of the user's favorite paintings'''
 
     user_id = session['user_id']
 
-    # NEED TO ADD FAVORITE = 1 + JAVASCRIPT HERE
-    favorites = db.execute("SELECT * FROM history WHERE user_id = ?", user_id)
+    # Get favorites painting from History
+    favorites = db.execute("SELECT * FROM history WHERE user_id = ? AND favorite = ?", user_id, '1')
 
     return render_template("favorites.html", favorites=favorites)
 
@@ -281,3 +316,22 @@ def logout():  # CS50 Pset recycled
 
     # Redirect user to login form
     return redirect("/")
+
+
+'''Like a record and mark it as favorite'''
+@app.route("/like/<int:record_id>", methods=["POST"])
+def like(record_id):
+
+    current = db.execute("SELECT favorite FROM history WHERE id = ?", record_id)[0]["favorite"]
+
+    if current == 0:
+        db.execute("UPDATE history SET favorite = 1 WHERE id = ?", record_id)
+        # Send result for js toggle functionality
+        return jsonify({"status": "liked"})
+
+    else:
+        db.execute("UPDATE history SET favorite = 0 WHERE id = ?", record_id)
+        # Send result for js toggle functionality
+        return jsonify({"status": "unliked"})
+
+

@@ -18,3 +18,17 @@ CREATE TABLE IF NOT EXISTS history (
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
+
+CREATE TABLE IF NOT EXISTS lists (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    user_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS parameters (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    list_id INTEGER NOT NULL,
+    artist_id INTEGER,
+    FOREIGN KEY(list_id) REFERENCES users(id)
+);
