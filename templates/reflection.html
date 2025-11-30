@@ -3,6 +3,13 @@
 {% block main %}
     <h1>Reflect</h1>
 
+    <div>
+        <p><strong>Title: </strong>{{ art.title }}</p>
+        <p><strong>Artist: </strong>{{ art.artistDisplayName }}</p>
+    </div>
+
+
+
     <form method="post">
         <input name="art_id" value="{{ art.objectID }}" hidden>
         <input name="impression" autocomplete="off" autofocus placeholder="Give your impressions" type="text">
@@ -10,7 +17,5 @@
     </form>
 
     <a target="blank" href="{{ art.primaryImageSmall }}"><img src="{{ art.primaryImageSmall }}" alt="{{ art.title }}" class="image_thumbnail"></a>
-    <p><strong>Title: </strong>{{ art.title }}</p>
-    <p><strong>Artist: </strong>{{ art.artistDisplayName }}</p>
 
 {% endblock %}
