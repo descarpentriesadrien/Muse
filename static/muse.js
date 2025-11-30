@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-        if (document.querySelector('.like-button')) {
-            likeArt();
-        }
+    if (document.querySelector('.like-button')) {
+        likeArt();
+    }
+    if (document.querySelector('#viewer-container')) {
+        openSeaDragon();
+    }
 });
 
 // Toggle a like/unlike function with like/unlike buttons in table
@@ -22,21 +25,44 @@ function likeArt() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({})
             })
-            .then(response => response.json())
-            .then(result => {
-                console.log('Success:', result);
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Success:', result);
 
-                // According to response, change from like to unlike
-                if (result.status === 'liked') {
-                    likeButton.innerHTML = '<i class="bi bi-heart-fill"></i> Unlike';
-                } else if (result.status === 'unliked') {
-                    likeButton.innerHTML = '<i class="bi bi-heart"></i> Like';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                    // According to response, change from like to unlike
+                    if (result.status === 'liked') {
+                        likeButton.innerHTML = '<i class="bi bi-heart-fill"></i> Unlike';
+                    } else if (result.status === 'unliked') {
+                        likeButton.innerHTML = '<i class="bi bi-heart"></i> Like';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
     });
 }
 
+function openSeaDragon() {
+    console.log('detected')
+    // OpenSeadragon Viewer setup
+    const viewer = OpenSeadragon({
+        id: "openseadragon-viewer",
+        prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
+        tileSources: {
+            type: 'image',
+            url: "{{ art.primaryImage }}",
+            placeholder: "{{ art.primaryImageSmall }}"
+        },
+        showNavigator: true,
+        showLoading: true,
+        immediateRender: true,
+        visibilityRatio: 1.0,
+        constrainDuringPan: true,
+    });
+
+    // When tiles finish loading hide the spinner
+    viewer.addHandler("open", () => {
+        document.getElementById("loading-spinner").style.display = "none";
+    });
+}
