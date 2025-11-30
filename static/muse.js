@@ -43,6 +43,8 @@ function likeArt() {
     });
 }
 
+
+// Set up for OpenSeaDragon viewer container
 function openSeaDragon() {
 
     const viewerContainer= document.getElementById('viewer-container');
