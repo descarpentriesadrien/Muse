@@ -27,10 +27,11 @@
                         <td>{{ art.medium }}</td>
                         {% if art.primaryImageSmall %}
                         <td><a target="blank" href="{{ art.primaryImage }}"><img src="{{ art.primaryImageSmall }}" alt="{{ art.title }}" class="image_thumbnail"></a></td>
+                        <td><a href="/details?art_id={{ art.objectID }}" class="btn btn-primary">View</a></td>
                         {% else %}
                         <td>No picture available</td>
+                        <td></td>
                         {% endif %}
-                        <td><a href="/details?art_id={{ art.objectID }}" class="btn btn-primary">View</a></td>
                     </tr>
                 {% endfor %}
             {% else %}
