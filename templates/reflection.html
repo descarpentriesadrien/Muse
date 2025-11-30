@@ -12,11 +12,14 @@
 
     <form method="post">
         <input name="art_id" value="{{ art.objectID }}" hidden>
+
         <div class="mb-3">
             <label for="impression" class="form-label">Impressions</label>
             <textarea class="form-control" id="impression" name="impression" rows="3" autocomplete="off" autofocus placeholder="Give your impressions" type="text"></textarea>
         </div>
+
         <button type="submit" formaction="/save_reflection" class="btn btn-primary">Save</button>
+        
     </form>
 
     <a target="blank" href="{{ art.primaryImageSmall }}"><img src="{{ art.primaryImageSmall }}" alt="{{ art.title }}" class="image_thumbnail"></a>
