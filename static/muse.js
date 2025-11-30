@@ -40,5 +40,3 @@ function likeArt() {
     });
 }
 
-
-function seaDragon
