@@ -5,7 +5,7 @@
 <p>How to use the viewer here</p>
 
 
-<div id="viewer-container">
+<div id="viewer-container" data-url="{{ art.primaryImage }}" data-placeholder="{{ art.primaryImageSmall }}">
   <div id="loading-spinner"></div>
   <div class="seadragon-container" id="openseadragon-viewer" style="width: 100%; height: 80vh;"></div>
   <div id="navigatorDiv" style="width:150px; height:150px;"></div>
@@ -48,28 +48,3 @@
 {% else %}
 <p>No art to display. Please refresh the page</p>
 {% endif %}
-
-<!-- <script>
-
-  // OpenSeadragon Viewer setup
-  const viewer = OpenSeadragon({
-    id: "openseadragon-viewer",
-    prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
-    tileSources: {
-      type: 'image',
-      url: "{{ art.primaryImage }}",
-      placeholder: "{{ art.primaryImageSmall }}"
-    },
-    showNavigator: true,
-    showLoading: true,
-    immediateRender: true,
-    visibilityRatio: 1.0,
-    constrainDuringPan: true,
-  });
-
-  // When tiles finish loading hide the spinner
-  viewer.addHandler("open", () => {
-    document.getElementById("loading-spinner").style.display = "none";
-  });
-
-</script> -->

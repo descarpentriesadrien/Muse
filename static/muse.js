@@ -44,15 +44,19 @@ function likeArt() {
 }
 
 function openSeaDragon() {
-    console.log('detected')
+
+    const viewerContainer= document.getElementById('viewer-container');
+    const url = viewerContainer.dataset.url;
+    const placeholder = viewerContainer.dataset.placeholder;
+
     // OpenSeadragon Viewer setup
     const viewer = OpenSeadragon({
         id: "openseadragon-viewer",
         prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
         tileSources: {
             type: 'image',
-            url: "{{ art.primaryImage }}",
-            placeholder: "{{ art.primaryImageSmall }}"
+            url: url,
+            placeholder: placeholder
         },
         showNavigator: true,
         showLoading: true,
