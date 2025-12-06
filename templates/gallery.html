@@ -4,6 +4,8 @@
 
 {% block main %}
     <h2>Gallery</h2>
+    <p>The results for this project are limited to {{API_COURTESY_LIMIT}} as a courtesy to the MET museum</p>
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -27,7 +29,7 @@
                         <td>{{ art.medium }}</td>
                         {% if art.primaryImageSmall %}
                         <td><a target="blank" href="{{ art.primaryImage }}"><img src="{{ art.primaryImageSmall }}" alt="{{ art.title }}" class="image_thumbnail"></a></td>
-                        <td><a href="/details?art_id={{ art.objectID }}" class="btn btn-primary">View</a></td>
+                        <td><a href="/details_dpt?art_id={{ art.objectID }}" class="btn btn-primary">View</a></td>
                         {% else %}
                         <td>No picture available</td>
                         <td></td>
@@ -42,6 +44,8 @@
         </tbody>
     </table>
 
-<p>The results for this project are limited to 10 as a courtesy to the MET museum</p>
+    <div class="pagination">
+        {{ pagination.links }}
+    </div>
 
 {% endblock %}

@@ -1,21 +1,11 @@
 {% if art %}
 
-<h2>Tutorial</h2>
-
-<p>How to use the viewer here</p>
-
-
-<div id="viewer-container" data-url="{{ art.primaryImage }}" data-placeholder="{{ art.primaryImageSmall }}">
-  <div id="loading-spinner"></div>
-  <div class="seadragon-container" id="openseadragon-viewer"></div>
-  <div id="navigatorDiv"></div>
-</div>
+<h1>{{ art.title }}</h1>
 
 <div>
   <table class="table">
     <thead>
       <tr>
-        <th>Title</th>
         <th>Artist</th>
         <th>Date</th>
         <th>Object Name</th>
@@ -26,7 +16,6 @@
     </thead>
     <tbody>
       <tr>
-        <td>{{ art.title }}</td>
         <td>{{ art.artistDisplayName }}</td>
         <td>{{ art.objectDate }}</td>
         <td>{{ art.objectName }}</td>
@@ -43,9 +32,19 @@
 
 </div>
 
-<a href="/reflection?art_id={{ art.objectID }}" class="btn btn-primary">Give your impression</a>
+<p><a href="/reflection?art_id={{ art.objectID }}" class="btn btn-primary" id="endtimer">Give your impression</a></p>
+
+<p id="load-message" style="display: block">It may take a moment while we load the breathtaking HD image</p>
+
+<div id="viewer-container" data-url="{{ art.primaryImage }}" data-placeholder="{{ art.primaryImageSmall }}">
+  <div id="loading-spinner"></div>
+  <div class="seadragon-container" id="openseadragon-viewer"></div>
+  <div id="navigatorDiv"></div>
+</div>
 
 {% else %}
+
 <p>Something went wrong. Please refresh the page or generate a new painting.</p>
 <a href="/art" class="btn btn-primary">Random</a>
+
 {% endif %}

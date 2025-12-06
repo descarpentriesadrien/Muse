@@ -1,26 +1,28 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Profile
+Profile
 {% endblock %}
 
 {% block main %}
 
-        <div class="mb-3">
-            <input type="text" placeholder="{{ username }}" disabled>
-        </div>
-        <form action="/profile" method="POST">
-            <div class="mb-3">
-                <input name="current_password" autocomplete="off" autofocus placeholder="Current Password" type="password" required>
-            </div>
-            <div class="mb-3">
-                <input name="new_password" autocomplete="off" placeholder="New Password" type="password" required>
-            </div>
-            <div class="mb-3">
-                <input name="confirm_new_password" autocomplete="off" placeholder="Confirm New Password" type="password" required>
-            </div>
-            <button class="btn btn-primary" type="submit">Change Password</button>
-        </form>
+<div class="mb-3">
+    <input type="text" placeholder="{{ username }}" disabled>
+</div>
+<form action="/profile" method="POST">
+    <div class="mb-3">
+        <input name="current_password" autocomplete="off" autofocus placeholder="Current Password" type="password"
+            required>
+    </div>
+    <div class="mb-3">
+        <input name="new_password" autocomplete="off" placeholder="New Password" type="password" required>
+    </div>
+    <div class="mb-3">
+        <input name="confirm_new_password" autocomplete="off" placeholder="Confirm New Password" type="password"
+            required>
+    </div>
+    <button class="btn btn-primary" type="submit">Change Password</button>
+</form>
 
 
 {% endblock %}

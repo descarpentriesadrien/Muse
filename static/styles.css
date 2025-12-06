@@ -1,7 +1,55 @@
 /* INDEX */
 .card-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(1, 1fr);
+  place-items: center;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 1fr;
+}
+
+.card img {
+  flex: 40%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.card-footer {
+  align-items: center;
+  padding-bottom: 1rem;
+}
+
+.card-title {
+  font-size: x-large;
+  font-weight: bold;
+}
+
+/* Styles for screens wider than 768px */
+@media (max-width: 640px) {
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1200px) {
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1201px) {
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 
@@ -74,4 +122,22 @@ table td {
 
 tbody tr:nth-of-type(odd) {
     background-color: rgb(179, 208, 255, 0.3)
+}
+
+
+/* PAGINATION */
+.pagination-page-info {
+    padding: .6em;
+    padding-left: 0;
+    width: 40em;
+    margin: .5em;
+    margin-left: 0;
+    font-size: 12px;
+}
+.pagination-page-info b {
+    color: black;
+    background: #6aa6ed;
+    padding-left: 2px;
+    padding: .1em .25em;
+    font-size: 150%;
 }

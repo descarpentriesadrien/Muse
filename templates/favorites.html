@@ -4,13 +4,13 @@
 
 {% block main %}
     <h1>My favorites</h1>
-
+<div  class="table-responsive">
     <table>
         <thead>
             <tr>
+                <th>Preview</th>
                 <th>Artist Name</th>
                 <th>Title</th>
-                <th>Impressions</th>
                 <th>View</th>
                 <th>Favorites</th>
             </tr>
@@ -19,9 +19,14 @@
             {% if favorites %}
                 {% for favorite in favorites %}
                     <tr class="art-row">
+                        {% if favorite.primaryImage %}
+                        <td><a target="blank" href="{{ favorite.primaryImage }}"><img src="{{ favorite.primaryImage }}" alt="{{ favorite.title }}" class="image_thumbnail"></a></td>
+                        {% else %}
+                        <td>No picture available</td>
+                        <td></td>
+                        {% endif %}
                         <td>{{ favorite.artistName }}</td>
                         <td>{{ favorite.title }}</td>
-                        <td>{{ favorite.impressions }}</td>
                         <td><a href="/details?art_id={{ favorite.objectID }}" class="btn btn-primary">View</a></td>
                         {% if favorite.favorite == 0 %}
                         <td><button class="btn btn-primary like-button" data-id="{{ favorite.id }}"><i class="bi bi-heart"></i> Like</button></td>
@@ -32,11 +37,13 @@
                 {% endfor %}
             {% else %}
                 <tr>
-                    <td colspan='4'>
+                    <td colspan='5'>
                         You do not have any favorites yet
                     </td>
                 </tr>
             {% endif %}
         </tbody>
     </table>
+</div>
+
 {% endblock %}

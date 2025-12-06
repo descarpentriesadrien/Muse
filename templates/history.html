@@ -1,42 +1,71 @@
 {% extends "layout.html" %}
 
-<title>{% block title %}History{% endblock %}</title>
+<title>{% block title %}My Reflections{% endblock %}</title>
 
 {% block main %}
-    <h1>History</h1>
+<h1>My Reflections</h1>
 
+<div class="table-responsive">
     <table>
         <thead>
             <tr>
+                <th>Preview</th>
                 <th>Artist Name</th>
                 <th>Title</th>
-                <th>Impressions</th>
-                <th>View</th>
+                <th>Actions</th>
                 <th>Like</th>
             </tr>
         </thead>
         <tbody>
             {% if history %}
-                {% for record in history %}
-                    <tr class="art-row">
-                        <td>{{ record.artistName }}</td>
-                        <td>{{ record.title }}</td>
-                        <td>{{ record.impressions }}</td>
-                        <td><a href="/details?art_id={{ record.objectID }}" class="btn btn-primary">View</a></td>
-                        {% if record.favorite == 0 %}
-                        <td><button class="btn btn-primary like-button" data-id="{{ record.id }}"><i class="bi bi-heart"></i> Like</button></td>
-                        {% else %}
-                        <td><button class="btn btn-primary like-button" data-id="{{ record.id }}"><i class="bi bi-heart-fill"></i> Unlike</button></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
+            {% for record in history %}
+            <tr class="art-row">
+                {% if record.primaryImage %}
+                <td><a target="blank" href="{{ record.primaryImage }}"><img src="{{ record.primaryImage }}"
+                            alt="{{ record.title }}" class="image_thumbnail"></a></td>
+                {% else %}
+                <td>No picture available</td>
+                {% endif %}
+                <td>{{ record.artistName }}</td>
+                <td>{{ record.title }}</td>
+
+                <td>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Actions
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a href="/details?art_id={{ record.objectID }}" class="dropdown-item">View</a>
+                            <a href="/reflection?art_id={{ record.objectID }}&id={{ record.id }}"
+                                class="dropdown-item">Edit</a>
+                            <form action="/delete" method="post">
+                                <input type="hidden" name="id" value="{{ record.id }}">
+                                <button type="submit" class="dropdown-item">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                </td>
+
+                {% if record.favorite == 0 %}
+                <td><button class="btn btn-primary like-button" data-id="{{ record.id }}"><i class="bi bi-heart"></i>
+                        Like</button></td>
+                {% else %}
+                <td><button class="btn btn-primary like-button" data-id="{{ record.id }}"><i class="bi bi-heart-fill"></i>
+                        Unlike</button></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
             {% else %}
-                <tr>
-                    <td colspan='4'>
-                        You do not have any impressions yet
-                    </td>
-                </tr>
+            <tr>
+                <td colspan='4'>
+                    You do not have any impressions yet
+                </td>
+            </tr>
             {% endif %}
         </tbody>
     </table>
+</div>
+
 {% endblock %}

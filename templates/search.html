@@ -3,12 +3,13 @@
 <title>{% block title %}Search{% endblock %}</title>
 
 {% block main %}
-    <form action="search" method="GET">
 
-        <!-- <input name="query" autocomplete="off" autofocus placeholder="Global search" type="text"> -->
+<h1>Check what the MET departments have in stocks!</h1>
 
-        <select name ="department_query">
-            <option selected>Choose a department</option>
+    <form action="search" method="get">
+
+        <select name ="department"  aria-label="Select">
+            <option selected disabled hidden>Choose a department</option>
             {% for department in departments %}
             <option value="{{ department.departmentId }}">{{ department.displayName }}</option>
             {% endfor %}

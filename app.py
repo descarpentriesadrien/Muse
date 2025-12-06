@@ -1,14 +1,16 @@
 import os
 import datetime
+import random
 import requests
 
 from cs50 import SQL
-from flask import Flask, flash, jsonify, redirect, render_template, request, session
+from flask import Flask, flash, jsonify, redirect, render_template, request, session, get_flashed_messages
 from flask_caching import Cache
+from flask_paginate import Pagination, get_page_parameter
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import cache, random_art_id, get_art, search_met_api, login_required, fetch_departments, get_department_objects, get_art_from_department
+from helpers import cache, get_painting, search_met_api, login_required, fetch_departments, get_department_objects, get_art, get_user_history, fetch_object_ids, apology
 
 
 # Configure application
@@ -38,37 +40,41 @@ def after_request(response):
     return response
 
 
+# Number of attempts for API calls (This is to avoid too many calls as per MET's request)
+# It is far from efficient, but unfortunately their filtering is not working
+API_COURTESY_LIMIT = 25
+
 
 @app.route("/")
 @login_required
 def index():
 
-    # IMPORT APOLOGY PAGES OR CHANGE LOGIC
     return render_template("index.html")
-
 
 
 @app.route("/art")
 @login_required
-def art():
+def random_art():
+    '''Random selection of a painting from the MET museum'''
 
-    # Number of attempts for API calls (This is to avoid too many calls at once as per MET's request)
-    attempts = 20
+    attempts = 0
 
-    for _ in range(attempts):
-        # Get a random art ID
-        art_id = random_art_id()
+    ids = fetch_object_ids()
 
-        # Get the art details from the API
-        art = get_art(art_id)
+    # Attempt to get a painting with image URL in response
+    while attempts <= API_COURTESY_LIMIT:
+
+        art_id = random.choice(ids)
+        art = get_painting(art_id)
 
         # Render the art
         if art:
             return render_template('art.html', art=art)
 
-    # Render Error page
-    return render_template("error.html")
+        attempts += 1
 
+    # Render Error page
+    return apology('Something went wrong, please refresh the page')
 
 
 @app.route("/history")
@@ -76,19 +82,51 @@ def art():
 def history():
     '''Display a table of previously seen/answered art pieces'''
 
-    user_id = session['user_id']
+    # Get history for current user
+    history = get_user_history(session['user_id'])
 
-    history = db.execute("SELECT * FROM history WHERE user_id = ?", user_id)
+    if not history:
+        return apology("Something went wrong")
 
     return render_template("history.html", history=history)
+
 
 @app.route("/details")
 @login_required
 def details():
-    '''Display details of an individual record'''
+    '''Display details of an individual record (painting only)'''
 
     art_id = request.args.get('art_id')
+
+    try:
+        art_id_int = int(art_id)
+    except:
+        return apology("This is not a valid art id")
+
+    art = get_painting(art_id)
+
+    if not art:
+        return apology("Art not found")
+
+    return render_template("details.html", art=art)
+
+
+@app.route("/details_dpt")
+@login_required
+def departments_details():
+    '''Display details of an individual record coming from the department search (less constraint)'''
+
+    art_id = request.args.get('art_id')
+
+    try:
+        art_id_int = int(art_id)
+    except:
+        return apology("This is not a valid art id")
+
     art = get_art(art_id)
+
+    if not art:
+        return apology("Art could not be found")
 
     return render_template("details.html", art=art)
 
@@ -98,12 +136,42 @@ def details():
 def reflection():
     '''Renders a page on which user can reflect. Display art's info'''
 
-    # From art_id value, get art details (cached)
+    # From art_id value, get art details
     art_id = request.args.get("art_id")
-    art = get_art(art_id)
+    art = get_painting(art_id)
+
+    try:
+        art_id_int = int(art_id)
+    except:
+        return apology("This is not a valid art id")
+
+    if not art:
+        return apology("Art could not be found")
+
+    # Get record id
+    record_id = request.args.get('id')
+
+    if record_id:
+        try:
+            record_id_int = int(record_id)
+        except:
+            return apology("This is not a valid record id")
+
+    # Show the existing data for the field if a record id is found
+    if record_id:
+
+        reflections = db.execute(
+            "SELECT * FROM history WHERE user_id = ? AND id = ?", session['user_id'], record_id)
+
+        impressions = reflections[0]['impressions']
+        connections = reflections[0]['connections']
+        meaning = reflections[0]['meaning']
+        composition = reflections[0]['composition']
+
+        # Display the form with the existing data if any
+        return render_template("reflection.html", art=art, impressions=impressions, connections=connections, meaning=meaning, composition=composition, record_id=record_id)
 
     return render_template("reflection.html", art=art)
-
 
 
 @app.route("/save_reflection", methods=["POST"])
@@ -114,26 +182,120 @@ def save_reflection():
     # Get user ID
     user_id = session['user_id']
 
-    # Get art id and impression from user and form
+    # Get Ids from form
     art_id = request.form.get("art_id")
-    art = get_art(art_id)
-    impression = request.form.get("impression")
+    record_id = request.form.get('id')
 
-    # Save to DB
-    db.execute("INSERT INTO history (user_id, objectID, objectName, title, artistName, primaryImage, impressions) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, art["objectID"], art["objectName"], art["title"], art["artistDisplayName"], art["primaryImage"], impression)
+    if art_id:
+        try:
+            art_id_int = int(art_id)
+        except:
+            return apology("This is not a valid id")
 
-    history = db.execute("SELECT * FROM history WHERE user_id = ?", user_id)
+    # Get Art details
+    art = get_painting(art_id)
 
-    return render_template("history.html", history=history)
+    if not art:
+        return apology("Art could not be found")
+
+    # Get user input
+    impressions = request.form.get('impressions')
+    connections = request.form.get('connections')
+    meaning = request.form.get('meaning')
+    composition = request.form.get('composition')
+
+    # Minimum field to input
+    if not impressions:
+        return apology("Please submit your impressions")
+
+    # Dictionnary to add in DB
+    params = {
+        'user_id': user_id,
+        'objectID': art["objectID"],
+        'objectName': art["objectName"],
+        'title': art["title"],
+        'artistName': art["artistDisplayName"],
+        'primaryImage': art["primaryImageSmall"],
+        'impressions': impressions,
+        'connections': connections,
+        'meaning': meaning,
+        'composition': composition,
+    }
+
+    # If edited, update
+    if record_id:
+        db.execute("UPDATE history SET impressions = ?, connections = ?, meaning = ?, composition = ? WHERE id = ?",
+                   impressions, connections, meaning, composition, record_id)
+    # If created, insert
+    else:
+        db.execute("INSERT INTO history (user_id, objectID, objectName, artistName, title, primaryImage, impressions, connections, meaning, composition) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                   params['user_id'], params['objectID'], params['objectName'], params['artistName'], params['title'], params['primaryImage'], params['impressions'], params['connections'], params['meaning'], params['composition'])
+
+    return redirect("/history")
+
+
+@app.route("/delete", methods=["POST"])
+@login_required
+def delete_reflection():
+
+    # Get Ids
+    record_id = request.form.get('id')
+
+    # Validation
+    try:
+        int_record_id = int(record_id)
+    except ValueError:
+        return apology("Invalid record ID")
+
+    db.execute("DELETE FROM history WHERE id = ?", int_record_id)
+
+    flash("The reflection was successfully deleted")
+
+    return redirect("/history")
 
 
 @app.route("/search")
 @login_required
-def search_route():
+def search():
     '''Search for objects from the collection'''
 
+    '''The MET does not always return a painting url in their JSON object.
+    In order to avoid displaying multiple results without an image, I then have to
+    filter on the back end. This slows down the process drastically and is not
+    efficient at all. I currently display only records with a painting (which is the goal of the app).
+    I hope this can be taken into consideration'''
+
+    # Pagination set up
+    search = False
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    per_page = 5
+
+    # Slice items for pagination
+    start = (page - 1) * per_page
+    end = start + per_page
+
+    # Fetch departments
+    departments = fetch_departments()
+    valid_departments = set()
+
+    # Build a set of valid department id
+    for department in departments:
+        valid_departments.add(str(department['departmentId']))
+
+    # Get user input
     query = request.args.get("query")
-    dept_id = request.args.get("department_query")
+    department_id = request.args.get("department")
+
+    # Validation
+    if query is not None and query.strip() == '':
+        flash('Please enter a search term or select a department')
+        return render_template('search.html', departments=fetch_departments())
+
+    if department_id is not None and not department_id.isdigit():
+        return apology('The department ID is an integer.')
+
+    if department_id is not None and department_id not in valid_departments:
+        return apology('This department was not found.')
 
     # Global search
     if query:
@@ -141,34 +303,41 @@ def search_route():
         results = search_met_api(query)
         arts = []
 
-        # For each ids, get the art details and add to arts list
+        # For each ids, get the art details and add to arts list (ONLY IF OF TYPE PAINTING AND HAS IMAGE)
         if results:
-            # LIMITING TO 10 AS A COURTESY FOR API CALLS
-            for art_id in results[:10]:
-                art_details = get_art(art_id)
+            # limiting calls as a courtesy
+            for art_id in results[:API_COURTESY_LIMIT]:
+                art_details = get_painting(art_id)
                 if art_details:
                     arts.append(art_details)
-                    
-        return render_template("gallery.html", arts=arts)
+
+        page_arts = arts[start:end]
+
+        pagination = Pagination(page=page, total=len(arts), per_page=per_page, search=False, record_name='arts', css_framework='bootstrap', args=request.args)
+        return render_template("gallery.html", arts=page_arts, pagination=pagination, API_COURTESY_LIMIT=API_COURTESY_LIMIT)
 
     # Department search
-    if dept_id:
+    if department_id:
+
         # Use API to return a list of ID for artist
-        results = get_department_objects(dept_id)
+        results = get_department_objects(department_id)
         arts = []
 
         # For each ids, get the art details and add to arts list
         if results:
-            # LIMITING TO 10 AS A COURTESY FOR API CALLS
-            for art_id in results[:10]:
-                art_details = get_art_from_department(art_id)
+            # Limiting calls as a courtesy
+            for art_id in results[:API_COURTESY_LIMIT]:
+                art_details = get_art(art_id)
                 if art_details:
                     arts.append(art_details)
 
-        return render_template("gallery.html", arts=arts)
+        page_arts = arts[start:end]
+
+        pagination = Pagination(page=page, total=len(arts), per_page=per_page, search=False, record_name='arts', css_framework='bootstrap', args=request.args)
+
+        return render_template("gallery.html", arts=page_arts, pagination=pagination, API_COURTESY_LIMIT=API_COURTESY_LIMIT)
 
     # Default page
-    departments = fetch_departments()
     return render_template("search.html", departments=departments)
 
 
@@ -180,7 +349,8 @@ def favorites():
     user_id = session['user_id']
 
     # Get favorites painting from History
-    favorites = db.execute("SELECT * FROM history WHERE user_id = ? AND favorite = ?", user_id, '1')
+    favorites = db.execute(
+        "SELECT * FROM history WHERE user_id = ? AND favorite = ?", user_id, '1')
 
     return render_template("favorites.html", favorites=favorites)
 
@@ -260,7 +430,8 @@ def profile():  # CS50 Pset recycled
             return apology("Incorrect password")
 
         # Update user's password
-        db.execute("UPDATE users SET hash = ? WHERE id = ?", generate_password_hash(new_password), session["user_id"])
+        db.execute("UPDATE users SET hash = ? WHERE id = ?",
+                   generate_password_hash(new_password), session["user_id"])
 
         # Render a simple page to show success
         return render_template("update.html")
@@ -287,7 +458,8 @@ def login():  # CS50 Pset recycled
 
         # Query database for username
         rows = db.execute(
-            "SELECT * FROM users WHERE username = ?", request.form.get("username")
+            "SELECT * FROM users WHERE username = ?", request.form.get(
+                "username")
         )
 
         # Ensure username exists and password is correct
@@ -319,10 +491,12 @@ def logout():  # CS50 Pset recycled
 
 
 '''Like a record and mark it as favorite'''
+@login_required
 @app.route("/like/<int:record_id>", methods=["POST"])
 def like(record_id):
 
-    current = db.execute("SELECT favorite FROM history WHERE id = ?", record_id)[0]["favorite"]
+    current = db.execute("SELECT favorite FROM history WHERE id = ?", record_id)[
+        0]["favorite"]
 
     if current == 0:
         db.execute("UPDATE history SET favorite = 1 WHERE id = ?", record_id)
@@ -335,3 +509,29 @@ def like(record_id):
         return jsonify({"status": "unliked"})
 
 
+@login_required
+@app.route("/stats")
+def stats():
+    '''Renders some stats'''
+
+    user_id = session['user_id']
+
+    # Statistics
+    favorite_artist_db = db.execute(
+        "SELECT artistName, COUNT(*) AS fav_count FROM history WHERE user_id = ? AND favorite = 1 GROUP BY artistName ORDER BY fav_count DESC LIMIT 1", user_id)
+
+    liked_paintings_db = db.execute("SELECT COUNT(*) AS total FROM history WHERE user_id = ? AND favorite = 1", user_id)
+
+    total_reflections_db = db.execute("SELECT COUNT(*) AS total FROM history WHERE user_id = ?", user_id)
+
+    reflected_artist_db = db.execute(
+        "SELECT artistName, COUNT(*) AS name FROM history WHERE user_id = ? GROUP BY artistName ORDER BY name DESC LIMIT 1", user_id)
+
+    # Validation
+    favorite_artist = favorite_artist_db[0]['artistName'] if favorite_artist_db else None
+    liked_paintings = liked_paintings_db[0]['total'] if liked_paintings_db else None
+    total_reflections = total_reflections_db[0]['total'] if total_reflections_db else None
+    reflected_artist = reflected_artist_db[0]['artistName'] if reflected_artist_db else None
+
+
+    return render_template("stats.html", favorite_artist=favorite_artist, liked_paintings=liked_paintings, total_reflections=total_reflections, reflected_artist=reflected_artist)

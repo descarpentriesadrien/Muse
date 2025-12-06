@@ -70,5 +70,7 @@ function openSeaDragon() {
     // When tiles finish loading hide the spinner
     viewer.addHandler("open", () => {
         document.getElementById("loading-spinner").style.display = "none";
+        document.getElementById("load-message").style.display = "none";
+        startTime = Date.now();
     });
 }
