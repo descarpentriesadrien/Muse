@@ -146,7 +146,8 @@ I know, I know. I ran out of time, and this was not as easy as I thought this wa
 
 # Why not add the pagination on my reflections and my favorites?
 
-For the same reason as above. I added more features that were not in the
+For the same reason as above. I added more features that were not in my original proposal, such as my favorites, or the like/unlike function, which took a lot of time on their own.
+
 
 --
 ### muse.db Diagram:
@@ -159,9 +160,18 @@ erDiagram
 Available in schema.sql
 
 
---
-## Acknowledgments
---
+---
+### Acknowledgments
+---
 
 The artwork data is coming from the MET museum Art collection Api available here: https://metmuseum.github.io/
 The artwork viewer is OpenSeaDragon: https://openseadragon.github.io/
+
+
+--
+###
+--
+
+I have had a lot of fun designing this website. It is likely that I will take it further, as I had even more fun scrolling through the arts and would find myself just watching some of those breathtaking masterpiece.
+
+If you play around with the website (not just the code), I hope you enjoy it just as much as I did. 
