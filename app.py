@@ -97,10 +97,10 @@ def history_by_artist(artist_name):
     '''Display a table of previously seen/answered art pieces for a specific artis'''
 
     # artist = request.args.get('artist_name')
-    # print(artist)
+    print(artist_name)
 
     # Get history for current user
-    history = db.execute("SELECT * FROM history WHERE artistName = ? AND user_id = ?", session['user_id'], artist_name)
+    history = db.execute("SELECT * FROM history WHERE artistName = ? AND user_id = ?", artist_name, session['user_id'])
     print(history)
 
     if not history:
