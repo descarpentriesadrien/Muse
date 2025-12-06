@@ -11,36 +11,56 @@ Profile
 
 <div class="card-container">
 
+    {% if favorite_artist %}
     <div class="card">
-    <div class="card-body">
-        <h5 class="card-title">{{favorite_artist}}</h5>
-        <p class="card-text">Your favorite Artist</p>
-    <a href="/search?query={{ favorite_artist }}" class="btn btn-primary">See more</a>
+        <div class="card-body">
+            <h5 class="card-title">{{favorite_artist}}</h5>
+            <p class="card-text">Your favorite Artist</p>
+            <a href="/search?query={{ favorite_artist }}" class="btn btn-primary">See more</a>
+        </div>
     </div>
+    {% else %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">No favorite artist yet</h5>
+            <p class="card-text">Your favorite Artist</p>
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% if reflected_artist %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{reflected_artist}}</h5>
+            <p class="card-text">The artist you have reflected the most on.</p>
+            <a href="{{ url_for('history_by_artist', artist_name=reflected_artist) }}" class="btn btn-primary">Check my
+                reflections</a>
+        </div>
+    </div>
+    {% else %}
+        <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">You do not have reflections yet</h5>
+            <p class="card-text">The artist you have reflected the most on.</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{liked_paintings}}</h5>
+            <p class="card-text">The total number of like paitings</p>
+            <a href="/favorites" class="btn btn-primary">Go to favorites</a>
+        </div>
     </div>
 
     <div class="card">
-    <div class="card-body">
-        <h5 class="card-title">{{reflected_artist}}</h5>
-        <p class="card-text">The artist you have reflected the most on.</p>
-        <a href="{{ url_for('history_by_artist', artist_name=reflected_artist) }}" class="btn btn-primary">Check my reflections</a>
-    </div>
-    </div>
-
-    <div class="card">
-    <div class="card-body">
-        <h5 class="card-title">{{liked_paintings}}</h5>
-        <p class="card-text">The total number of like paitings</p>
-        <a href="/favorites" class="btn btn-primary">Go to favorites</a>
-    </div>
-    </div>
-
-    <div class="card">
-    <div class="card-body">
-        <h5 class="card-title">{{total_reflections}}</h5>
-        <p class="card-text">The total amount of reflections you have written!</p>
-        <a href="/history" class="btn btn-primary">Go to reflections</a>
-    </div>
+        <div class="card-body">
+            <h5 class="card-title">{{total_reflections}}</h5>
+            <p class="card-text">The total amount of reflections you have written!</p>
+            <a href="/history" class="btn btn-primary">Go to reflections</a>
+        </div>
     </div>
 
 
