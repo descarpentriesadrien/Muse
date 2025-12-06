@@ -30,7 +30,11 @@ A simple page, recycled from CS50 Pset Finance, on which the user can login.
 
 ## Art Surprise
 
-The core functionality of Muse. Art Surprise randomly select one artwork from the vast collection of the MET museum. The artwork must fulfill some requirements: It must be of classification 'Painting' and contain a url of the
+The core functionality of Muse. Art Surprise randomly select one artwork from the vast collection of the MET museum. The artwork must fulfill some requirements: It must be of classification 'Painting' and contain a url of a photo of the artwork. While the classification is of type painting, it is normal to sometimes come accross "scroll" or "print," etc. The classification is not constrained to the "Object Name" which is much more precise.
+
+The Art Surprise page contains a tile viewer which displays the Artwork in high resolution and offers the user the ability to zoom in and out, or go full screen, giving the ability to trully appreciate the art therein.
+
+If the user decides to jot down their thoughts on the artwork, they can do so by clicking on "give your impression." This will lead them to the reflection page, on which the user can choose to write some of their thoughts (first impressions, connections, meaning, composition). Once saved, the artwork and some of its information (including its API ID) are saved in the database to be revisited in the Reflections page. 
 
 ## My Reflections
 
