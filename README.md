@@ -58,9 +58,13 @@ Any art on this page can be liked or unliked, and can be found in "My favorites"
 
 ## My Favorites
 
-My favorites page contains all the art that are liked by the user. Like in "My Reflections," the user can preview the artwork by clicking on the thumbnail, which will open a new window with a larger size image. By clicking '
+My favorites page contains all the art that are liked by the user. Like in "My Reflections," the user can preview the artwork by clicking on the thumbnail, which will open a new window with a larger size image. By clicking the "view" button, the user will redirected to the Details Page, which renders the HD viewer container of the image along with some information.
+
+On this page, the Art can be liked or unliked. An art that is unliked stays on the page until the page is refresh.
 
 ## Departments
+
+From the Departments page, the user can select one of the MET's department and access the collection for that department. If the search is successful, the results will be displayed in a table on the gallery page. From the page therein, the user can preview the image by clicking on the thumbnail, which will open another window with a larger size image. The "view" button will lead them to the Details page on which the user can explore the art in the HD viewer container, and write their impressions if they choose to do so, therefore creating a record in the database. 
 
 ## Stats
 
