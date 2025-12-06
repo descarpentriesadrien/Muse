@@ -28,7 +28,7 @@
 
         <link href="/static/styles.css" rel="stylesheet">
 
-        <script src="static/muse.js"></script>
+        <script src="{{ url_for('static', filename='muse.js') }}"></script>
 
         <title>Muse: {% block title %}{% endblock %}</title>
 
