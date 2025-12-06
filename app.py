@@ -91,13 +91,13 @@ def history():
     return render_template("history.html", history=history)
 
 
-@app.route("/history/<int:artist_name>")
+@app.route("/history/<artist_name>")
 @login_required
-def history_by_artist():
+def history_by_artist(artist_name):
     '''Display a table of previously seen/answered art pieces for a specific artis'''
 
-    artist = request.args.get('artist_name')
-    print(artist)
+    # artist = request.args.get('artist_name')
+    # print(artist)
 
     # Get history for current user
     history = db.execute("SELECT * FROM history WHERE artistName = ? AND user_id = ?", session['user_id'], artist)
