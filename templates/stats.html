@@ -47,14 +47,24 @@ Profile
     </div>
     {% endif %}
 
+    {% if liked_paintings %}
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{liked_paintings}}</h5>
-            <p class="card-text">The total number of like paitings</p>
+            <p class="card-text">The total number of liked paitings</p>
             <a href="/favorites" class="btn btn-primary">Go to favorites</a>
         </div>
     </div>
+    {% else %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">0</h5>
+            <p class="card-text">The total number of liked paitings</p>
+        </div>
+    </div>
+    {% endif %}
 
+    {% if total_reflections %}
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{total_reflections}}</h5>
@@ -62,6 +72,14 @@ Profile
             <a href="/history" class="btn btn-primary">Go to reflections</a>
         </div>
     </div>
+    {% else %}
+        <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">0</h5>
+            <p class="card-text">The total amount of reflections you have written!</p>
+        </div>
+    </div>
+    {% endif %}
 
 
 
