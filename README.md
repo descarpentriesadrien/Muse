@@ -99,7 +99,41 @@ The global search returns the list of objects that contains the query in their d
 ### Design and implementation Choices
 --
 
+## Good outcome
+[x] Users can register, login, logout.
+[x] Users can click on a button which will redirect to another page and generate a random piece of art from the MET collection. A timer starts. * The timer was not implemented unfortunately *
+[x] Users can answer some questions on a different page, "like" the art, and jot down thoughts on the art piece they observed, creating a record in the database.
+[x] The user can access these records on a different page, both as a table and as individual record.
+[x] The application styling is polished and responsive. It works as well on a phone than it does on a desktop.
+[x] CSS and HTML passes the markup validator without error.
 
+## Better outcome
+
+[x] The API calls are efficient. The data is cached to avoid too many calls.
+[x] Pagination is added, making navigation easier. * Implemented on the departments search *
+[x] Users can select a specific artist, period, or type of art that will be generated. For example "Vincent van Gogh," "Claude Monnet" or "Painting," "Photograph" or "Egyptian art" etc.
+[x] Users can access a page which provide useful information, such as their longest observed piece of art, or which artist they have liked the most, and more.
+[x] HTML and CSS is improved for accessibility.
+
+## Best outcome
+
+[x] Users can filter tables for granular search of their previous records. * This is implemented only once, in the Stats page, with the artist most reflected on, which displays only the record filtered for that artis *
+[] Users can change their preferences of artists, periods etc from the profile page.
+[x] Users can select arts coming from specific departments.
+[] Users can create lists in which they can select MULTIPLE artists, periods, or type of art that will be generated. Users can then have different categories, which they can pick to generate a specific selection.
+
+
+## Issues during implementations
+
+Some issues arose during implementation, the first one being the data itself returned by the API. Unfortunately, there is very little to no filtering done at the source, and everything must be done on my side. This made the calls very inefficient, with subsequent loading times. Some features were therefore not interesting anymore to implement, although it was technically possible. An example would be to create categories, in wich the users would be able to select or input specific parameters that can then be searched (artist, period, etc). As it stands, the response would return ALL object IDs, and I have to check each object if they satisfy the parameters. The inneficinecy of it all is observable in the departments search function and in the global search function, which can take 4/5 seconds to load, with very little constrains. This is also the reason why I am limiting the number of record I display with the search, as I would have to make another call for each object, search that the parameter is indeed what I am looking for, and move on to the next etc.
+
+
+I heavily relied on Bootstrap's design for responsiveness. The design of Muse is very basic, as I have very little experience in web design. However, I have invested time to make sure the website is accessible, responsive and passes CSS and HTML validators.
+
+
+# Why does it take so long for the response?
+
+The MET
 
 --
 ### muse.db Diagram:
