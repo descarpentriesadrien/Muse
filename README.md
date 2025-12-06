@@ -38,9 +38,27 @@ If the user decides to jot down their thoughts on the artwork, they can do so by
 
 ## My Reflections
 
-My Reflections pages display all the user's artwork on which some thoughts were jotted down. 
+My Reflections pages display all the user's artwork on which some thoughts were jotted down. The thumbnail can be selected which will open a new window with the large size picture. An action button contains three actions:
+
+# View
+
+The user access a detail page on which they can revisit the artwork in the HD viewer container, and give a new impression.
+
+# Edit
+
+The reflection can be edited if the user choose to do so. In edit mode, the current data in the database are displayed in the fields for the user to edit.
+
+# Delete
+
+The reflection can be deleted.
+
+# Like/Unlike
+
+Any art on this page can be liked or unliked, and can be found in "My favorites" page.
 
 ## My Favorites
+
+My favorites page contains all the art that are liked by the user. Like in "My Reflections," the user can preview the artwork by clicking on the thumbnail, which will open a new window with a larger size image. By clicking '
 
 ## Departments
 
