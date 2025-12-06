@@ -100,7 +100,7 @@ def history_by_artist(artist_name):
     # print(artist)
 
     # Get history for current user
-    history = db.execute("SELECT * FROM history WHERE artistName = ? AND user_id = ?", session['user_id'], artist)
+    history = db.execute("SELECT * FROM history WHERE artistName = ? AND user_id = ?", session['user_id'], artist_name)
     print(history)
 
     if not history:
