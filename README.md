@@ -34,9 +34,11 @@ The core functionality of Muse. Art Surprise randomly select one artwork from th
 
 The Art Surprise page contains a tile viewer which displays the Artwork in high resolution and offers the user the ability to zoom in and out, or go full screen, giving the ability to trully appreciate the art therein.
 
-If the user decides to jot down their thoughts on the artwork, they can do so by clicking on "give your impression." This will lead them to the reflection page, on which the user can choose to write some of their thoughts (first impressions, connections, meaning, composition). Once saved, the artwork and some of its information (including its API ID) are saved in the database to be revisited in the Reflections page. 
+If the user decides to jot down their thoughts on the artwork, they can do so by clicking on "give your impression." This will lead them to the reflection page, on which the user can choose to write some of their thoughts (first impressions, connections, meaning, composition). Once saved, the artwork and some of its information (including its API ID) are saved in the database to be revisited in the Reflections page.
 
 ## My Reflections
+
+My Reflections pages display all arts which the user 
 
 ## My Favorites
 
