@@ -22,9 +22,15 @@ With Muse, save your mindful reflections, revisit your favorite artwork at your 
 
 ## Register
 
+A simple page, recycled from CS50 Pset Finance, on which the user can create a new record in the database as long as the username does not already exist.
+
 ## Login
 
+A simple page, recycled from CS50 Pset Finance, on which the user can login.
+
 ## Art Surprise
+
+The core functionality of Muse. Art Surprise randomly select one artwork from the vast collection of the MET museum. The artwork must fulfill some requirements: It must be of classification 'Painting' and contain a url of the
 
 ## My Reflections
 
@@ -38,14 +44,24 @@ With Muse, save your mindful reflections, revisit your favorite artwork at your 
 
 
 --
-### Design Choices
+### Design and implementation Choices
 --
 
 
+--
+### muse.db Diagram:
+--
+
+erDiagram
+
+    USERS ||--|{ HISTORY
+
+Available in schema.sql
 
 
-
+--
 ## Acknowledgments
+--
 
 The artwork data is coming from the MET museum Art collection Api available here: https://metmuseum.github.io/
 The artwork viewer is OpenSeaDragon: https://openseadragon.github.io/
