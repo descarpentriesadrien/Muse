@@ -64,9 +64,11 @@ On this page, the Art can be liked or unliked. An art that is unliked stays on t
 
 ## Departments
 
-From the Departments page, the user can select one of the MET's department and access the collection for that department. If the search is successful, the results will be displayed in a table on the gallery page. From the page therein, the user can preview the image by clicking on the thumbnail, which will open another window with a larger size image. The "view" button will lead them to the Details page on which the user can explore the art in the HD viewer container, and write their impressions if they choose to do so, therefore creating a record in the database. 
+From the Departments page, the user can select one of the MET's department and access the collection for that department. If the search is successful, the results will be displayed in a table on the gallery page. From the page therein, the user can preview the image by clicking on the thumbnail, which will open another window with a larger size image. The "view" button will lead them to the Details page on which the user can explore the art in the HD viewer container, and write their impressions if they choose to do so, therefore creating a record in the database.
 
 ## Stats
+
+
 
 ## Search
 
