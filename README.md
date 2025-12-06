@@ -93,11 +93,12 @@ Discussed in the departments section.
 
 # Global search:
 
-
+The global search returns the list of objects that contains the query in their data, as per the MET api documentation. Searching for an artist name will not only returns the list of objects with that artist name, but objects that contains the query in other parts (title, constituents etc) which offers a broad range of choices for the user.
 
 --
 ### Design and implementation Choices
 --
+
 
 
 --
