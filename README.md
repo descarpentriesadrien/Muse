@@ -133,7 +133,20 @@ I heavily relied on Bootstrap's design for responsiveness. The design of Muse is
 
 # Why does it take so long for the response?
 
-The MET
+The MET's response contains a list of over 700k objects which, despite the filtering done in the url, does not filter at all. Each object then need to be checked against the parameters that we're looking for. For example in art suprise, what we want to see is a painting. While the url explicity filters for search?q="painting"&hasImages=true', the response does not filter and return the complete list.
+
+Once the list is received, I then have to check each object and return only those that fulfill those parameters. While I cache the response and do not need to get the same list again and again, I still have to open a random amount of object to check.
+
+As a courtesy to the MET, I limit the number of attempt.
+
+# Having a timer was a great idea, why not implementing it?
+
+I know, I know. I ran out of time, and this was not as easy as I thought this was going to be. My mistake was to think I could implement toward the end of the project. Unfortunately by then, my routes were already less flexible, and I had a hard time figuring out how I can pass in the time spent on a paiting into a different page, then save it into the database with the rest of the reflection. I got close, but I started to relay too much on AI and did not enjoy the process. I decided to stop.
+
+
+# Why not add the pagination on my reflections and my favorites?
+
+For the same reason as above. I added more features that were not in the
 
 --
 ### muse.db Diagram:
