@@ -94,15 +94,13 @@ def history():
 @app.route("/history/<artist_name>")
 @login_required
 def history_by_artist(artist_name):
-    '''Display a table of previously seen/answered art pieces for a specific artis'''
-
-    # artist = request.args.get('artist_name')
-    print(artist_name)
+    '''Display a table of previously seen/answered art pieces for a specific artist'''
 
     # Get history for current user
     history = db.execute("SELECT * FROM history WHERE artistName = ? AND user_id = ?", artist_name, session['user_id'])
     print(history)
 
+    # Validation
     if not history:
         return apology("Something went wrong")
 
