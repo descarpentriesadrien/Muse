@@ -38,7 +38,7 @@ If the user decides to jot down their thoughts on the artwork, they can do so by
 
 ## My Reflections
 
-My Reflections pages display all arts which the user 
+My Reflections pages display all the user's artwork on which some thoughts were jotted down. 
 
 ## My Favorites
 
