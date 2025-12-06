@@ -13,6 +13,12 @@ Who does not take out their phone to scroll mindlessly when bored? Reflection is
 
 As a registered user, access the (almost) entire collection of paintings, coins, and other artefacts of the MET museum. The main feature of Muse is "Art Surprise." Instead of mindlessly scrolling through your phone, or doomscrolling the internet, randomly explore the MET's painting collection, discover new artwork, and enjoy unexpected momenent of exploration and reflection.
 
-Save your mindful reflections and revisit your favorite artwork at your leisure, search for your favorite painter, sculptor, or era, or scrolls through the wonders of the MET's numerous departments and their artefacts.
+With Muse, save your mindful reflections, revisit your favorite artwork at your leisure, search for your favorite painter, sculptor, or era, or scrolls through the wonders of the MET's numerous departments and their artefacts.
 
 
+
+
+## Acknowledgments
+
+The artwork data is coming from the MET museum Art collection Api available here: https://metmuseum.github.io/
+The artwork viewer is OpenSeaDragon: https://openseadragon.github.io/
