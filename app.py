@@ -91,6 +91,20 @@ def history():
     return render_template("history.html", history=history)
 
 
+@app.route("/history/<int:artist_name>")
+@login_required
+def history():
+    '''Display a table of previously seen/answered art pieces'''
+
+    # Get history for current user
+    history = get_user_history(session['user_id'])
+
+    if not history:
+        return apology("Something went wrong")
+
+    return render_template("history.html", history=history)
+
+
 @app.route("/details")
 @login_required
 def details():
