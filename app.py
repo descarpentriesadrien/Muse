@@ -93,8 +93,8 @@ def history():
 
 @app.route("/history/<int:artist_name>")
 @login_required
-def history():
-    '''Display a table of previously seen/answered art pieces'''
+def history_by_artist():
+    '''Display a table of previously seen/answered art pieces for a specific artis'''
 
     # Get history for current user
     history = get_user_history(session['user_id'])
