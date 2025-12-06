@@ -68,9 +68,31 @@ From the Departments page, the user can select one of the MET's department and a
 
 ## Stats
 
+The Stats page offers 4 different insights, generated from query of the database:
+
+# Favorite artist
+
+Clicking on "See More" triggers a search of the MET's Collection, with the artist name as a search parameter.
+
+# Artist most reflected on
+
+Clicking on "Check my reflections" displays the filtered reflections for that artist only.
+
+# Total liked paitings
+
+# Total amount of reflections
 
 
 ## Search
+
+Search has two routes:
+
+# Departments
+
+Discussed in the departments section.
+
+# Global search:
+
 
 
 --
