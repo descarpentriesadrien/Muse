@@ -1,7 +1,6 @@
 # MUSE
 
-## Video Demo:
-
+## Video Demo:  https://youtu.be/z2H-zJC4I1o
 
 ## Summary
 
