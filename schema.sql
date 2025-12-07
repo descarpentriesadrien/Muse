@@ -18,6 +18,5 @@ CREATE TABLE IF NOT EXISTS history (
     meaning TEXT,
     composition TEXT,
     favorite INT,
-    time_spent INT,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );

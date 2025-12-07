@@ -10,6 +10,7 @@
             <thead>
                 <tr>
                     <th>Title</th>
+                    <th>ID</th>
                     <th>Artist</th>
                     <th>Date</th>
                     <th>Object Name</th>
@@ -23,6 +24,7 @@
                 {% for art in arts %}
                     <tr>
                         <td>{{ art.title }}</td>
+                        <td>{{ art.objectID }}</td>
                         <td>{{ art.artistDisplayName }}</td>
                         <td>{{ art.objectDate }}</td>
                         <td>{{ art.objectName }}</td>

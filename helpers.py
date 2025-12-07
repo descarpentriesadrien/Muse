@@ -174,6 +174,7 @@ def get_art(art_id):
     return None
 
 
+'''Query for user's history'''
 def get_user_history(user_id):
 
     # Get history for current user

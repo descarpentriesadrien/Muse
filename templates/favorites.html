@@ -20,7 +20,7 @@
                 {% for favorite in favorites %}
                     <tr class="art-row">
                         {% if favorite.primaryImage %}
-                        <td><a target="blank" href="{{ favorite.primaryImage }}"><img src="{{ favorite.primaryImage }}" alt="{{ favorite.title }}" class="image_thumbnail"></a></td>
+                        <td><a target="_blank" href="{{ favorite.primaryImage }}"><img src="{{ favorite.primaryImage }}" alt="{{ favorite.title }}" class="image_thumbnail"></a></td>
                         {% else %}
                         <td>No picture available</td>
                         <td></td>

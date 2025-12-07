@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Profile
+My stats
 {% endblock %}
 
 {% block main %}
@@ -41,7 +41,7 @@ Profile
     {% else %}
         <div class="card">
         <div class="card-body">
-            <h5 class="card-title">You do not have reflections yet</h5>
+            <h5 class="card-title">No reflections yet</h5>
             <p class="card-text">The artist you have reflected the most on.</p>
         </div>
     </div>
@@ -68,7 +68,7 @@ Profile
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{total_reflections}}</h5>
-            <p class="card-text">The total amount of reflections you have written!</p>
+            <p class="card-text">The total amount of reflections you have written.</p>
             <a href="/history" class="btn btn-primary">Go to reflections</a>
         </div>
     </div>

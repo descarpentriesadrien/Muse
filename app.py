@@ -41,84 +41,91 @@ def after_request(response):
 
 
 # Number of attempts for API calls (This is to avoid too many calls as per MET's request)
-# It is far from efficient, but unfortunately their filtering is not working
+# It is far from efficient, but unfortunately their filtering is not working as expected.
 API_COURTESY_LIMIT = 25
 
 
+'''Homepage'''
 @app.route("/")
 @login_required
 def index():
 
+    # Display the homepage
     return render_template("index.html")
 
 
+'''Get a random selection of a painting from the MET museum'''
 @app.route("/art")
 @login_required
 def random_art():
-    '''Random selection of a painting from the MET museum'''
 
+    # Total number of current attempts
     attempts = 0
 
+    # List of objects ID from the MET collection
     ids = fetch_object_ids()
 
     # Attempt to get a painting with image URL in response
     while attempts <= API_COURTESY_LIMIT:
 
+        # Select a random id from the list of ids
         art_id = random.choice(ids)
+        # Get the object details
         art = get_painting(art_id)
 
         # Render the art
         if art:
             return render_template('art.html', art=art)
 
+        # If None is return, increase attempts to avoid reaching API limit
         attempts += 1
 
     # Render Error page
     return apology('Something went wrong, please refresh the page')
 
 
+'''Display a table of previously seen/answered art pieces'''
 @app.route("/history")
 @login_required
 def history():
-    '''Display a table of previously seen/answered art pieces'''
+
+    user_id = session['user_id']
 
     # Get history for current user
-    history = get_user_history(session['user_id'])
-
-    if not history:
-        return apology("Something went wrong")
+    history = get_user_history(user_id)
 
     return render_template("history.html", history=history)
 
 
-@app.route("/history/<artist_name>")
+'''Display a table of previously seen/answered art pieces for a specific artist'''
+@app.route("/history/<path:artist_name>")
 @login_required
 def history_by_artist(artist_name):
-    '''Display a table of previously seen/answered art pieces for a specific artist'''
 
-    # Get history for current user
-    history = db.execute("SELECT * FROM history WHERE artistName = ? AND user_id = ?", artist_name, session['user_id'])
-    print(history)
+    user_id = session['user_id']
 
-    # Validation
-    if not history:
-        return apology("Something went wrong")
+    try:
+        history = db.execute("SELECT * FROM history WHERE artistName = ? AND user_id = ?", artist_name, user_id)
+    except Exception as e:
+        return []
 
-    return render_template("history.html", history=history)
+    return render_template("history.html", history=history or [])
 
 
+'''Display details of an individual record (painting only)'''
 @app.route("/details")
 @login_required
 def details():
-    '''Display details of an individual record (painting only)'''
 
     art_id = request.args.get('art_id')
 
+    # Validation
     try:
         art_id_int = int(art_id)
     except:
         return apology("This is not a valid art id")
 
+    # Get artwork detail from API
     art = get_painting(art_id)
 
     if not art:
@@ -127,18 +134,21 @@ def details():
     return render_template("details.html", art=art)
 
 
+'''Display details of an individual record coming from the department search (less constraint)'''
 @app.route("/details_dpt")
 @login_required
 def departments_details():
-    '''Display details of an individual record coming from the department search (less constraint)'''
 
+    # Get art Id from url
     art_id = request.args.get('art_id')
 
+    # Validation
     try:
         art_id_int = int(art_id)
     except:
         return apology("This is not a valid art id")
 
+    # Get Art details from API
     art = get_art(art_id)
 
     if not art:
@@ -147,22 +157,23 @@ def departments_details():
     return render_template("details.html", art=art)
 
 
+'''Renders a page on which user can reflect. Display art's info'''
 @app.route("/reflection")
 @login_required
 def reflection():
-    '''Renders a page on which user can reflect. Display art's info'''
 
     # From art_id value, get art details
     art_id = request.args.get("art_id")
-    art = get_painting(art_id)
+    art = get_art(art_id)
 
+    # Validation
     try:
         art_id_int = int(art_id)
     except:
         return apology("This is not a valid art id")
 
     if not art:
-        return apology("Art could not be found")
+        return apology("Unfortunately, this artwork is not accessible for reflection.")
 
     # Get record id
     record_id = request.args.get('id')
@@ -190,10 +201,10 @@ def reflection():
     return render_template("reflection.html", art=art)
 
 
+'''Save the user's impression on art piece'''
 @app.route("/save_reflection", methods=["POST"])
 @login_required
 def save_reflection():
-    '''Save the user's impression on art piece'''
 
     # Get user ID
     user_id = session['user_id']
@@ -225,6 +236,8 @@ def save_reflection():
         return apology("Please submit your impressions")
 
     # Dictionnary to add in DB
+    # Here I thought I could pass params directly, which turns out I cannot. I decided to still
+    # use it as it was easier to keep track
     params = {
         'user_id': user_id,
         'objectID': art["objectID"],
@@ -242,14 +255,17 @@ def save_reflection():
     if record_id:
         db.execute("UPDATE history SET impressions = ?, connections = ?, meaning = ?, composition = ? WHERE id = ?",
                    impressions, connections, meaning, composition, record_id)
+        flash("Your reflection was successfully updated")
     # If created, insert
     else:
         db.execute("INSERT INTO history (user_id, objectID, objectName, artistName, title, primaryImage, impressions, connections, meaning, composition) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                    params['user_id'], params['objectID'], params['objectName'], params['artistName'], params['title'], params['primaryImage'], params['impressions'], params['connections'], params['meaning'], params['composition'])
+        flash("Your reflection was successfully created")
 
     return redirect("/history")
 
 
+'''Delete a reflection'''
 @app.route("/delete", methods=["POST"])
 @login_required
 def delete_reflection():
@@ -270,10 +286,10 @@ def delete_reflection():
     return redirect("/history")
 
 
+'''Search for objects from the collection'''
 @app.route("/search")
 @login_required
 def search():
-    '''Search for objects from the collection'''
 
     '''The MET does not always return a painting url in their JSON object.
     In order to avoid displaying multiple results without an image, I then have to
@@ -282,7 +298,6 @@ def search():
     I hope this can be taken into consideration'''
 
     # Pagination set up
-    search = False
     page = request.args.get(get_page_parameter(), type=int, default=1)
     per_page = 5
 
@@ -357,10 +372,10 @@ def search():
     return render_template("search.html", departments=departments)
 
 
+'''Renders a table of the user's favorite paintings'''
 @app.route("/favorites")
 @login_required
 def favorites():
-    '''Renders a table of the user's favorite paintings'''
 
     user_id = session['user_id']
 
@@ -399,7 +414,7 @@ def register():  # CS50 Pset recycled
         # Insert the new user in the database
         try:
             db.execute("INSERT INTO users (username, hash) VALUES (?, ?)",
-                       username, generate_password_hash(password))
+                       username, generate_password_hash(password, method="pbkdf2:sha256", salt_length=16))
         # Apology if the username already exist
         except ValueError:
             return apology(f"The username '{username}' already exist")
@@ -442,15 +457,16 @@ def profile():  # CS50 Pset recycled
         # Validation: Check for matching passwords
         if not new_password == confirm_new_password:
             return apology("Your new password does not match")
-        if not check_password_hash(password, new_password):
+        if not check_password_hash(password, current_password):
             return apology("Incorrect password")
 
         # Update user's password
         db.execute("UPDATE users SET hash = ? WHERE id = ?",
-                   generate_password_hash(new_password), session["user_id"])
+                   generate_password_hash(new_password, method="pbkdf2:sha256", salt_length=16), session["user_id"])
 
         # Render a simple page to show success
-        return render_template("update.html")
+        flash("The password was successfully updated")
+        return render_template("/")
 
     return render_template("profile.html", username=username)
 
@@ -506,29 +522,30 @@ def logout():  # CS50 Pset recycled
     return redirect("/")
 
 
-'''Like a record and mark it as favorite'''
+'''Like/unlike a record'''
 @login_required
 @app.route("/like/<int:record_id>", methods=["POST"])
 def like(record_id):
 
-    current = db.execute("SELECT favorite FROM history WHERE id = ?", record_id)[
+    # Get the current status for the record id liked/unliked (with muse.js)
+    current_status = db.execute("SELECT favorite FROM history WHERE id = ?", record_id)[
         0]["favorite"]
 
-    if current == 0:
+    # Send result for js toggle functionality
+    if current_status == 0:
         db.execute("UPDATE history SET favorite = 1 WHERE id = ?", record_id)
-        # Send result for js toggle functionality
         return jsonify({"status": "liked"})
 
     else:
         db.execute("UPDATE history SET favorite = 0 WHERE id = ?", record_id)
-        # Send result for js toggle functionality
         return jsonify({"status": "unliked"})
 
 
+'''Renders some stats'''
 @login_required
 @app.route("/stats")
 def stats():
-    '''Renders some stats'''
+
 
     user_id = session['user_id']
 
